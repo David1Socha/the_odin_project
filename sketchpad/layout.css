@@ -1,0 +1,36 @@
+body {
+    padding-top: 10px;
+    background-color: tan;
+    text-align: center;
+}
+h1 {
+    /* #DealWithIt */
+    font-family: "Comic Sans MS", cursive, sans-serif;
+}
+button {
+    font-size: 1.1em;
+    padding: 5px;
+    border: 1px solid black;
+    background-color: #ccc;
+}
+#container {
+    border: 1px solid black;
+    display: inline-block;
+    padding-top: 0px;
+    padding-bottom: 100px;
+    padding-right: 120px;
+    padding-left: 120px;
+    background-color: #E64040;
+    border-radius: 80px;
+}
+#grid_area {
+    border: 1px solid black;
+    background-color: black;
+    display: inline-block;
+    width: 720px;
+    height: 720px;
+}
+.panel {
+    background-color: #C2C2C6;
+    float: left;
+}
