@@ -60,6 +60,12 @@ describe "#translate" do
     s.should == "aresquay"
   end
 
+  #Not sure if there are any real words where this would occur, but I added this test since the possibility is at least conceivable
+  it "counts consonants that follow 'qu'" do
+    s = translate("qurack")
+    s.should == "ackquray"
+  end
+
   it "translates many words" do
     s = translate("the quick brown fox")
     s.should == "ethay ickquay ownbray oxfay"
