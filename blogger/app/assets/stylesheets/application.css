@@ -19,3 +19,7 @@
 #menu li a {
   color:black;
 }
+.timestamp {
+    font-size: 10px;
+	color: gray;
+}

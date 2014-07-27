@@ -1,5 +1,10 @@
 <h1><%= @article.title %></h1>
+<% if @article.image.exists? %>
+  <p><%= image_tag @article.image.url %></p>
+<% end %>
+
 <p><%= @article.body %></p>
+<p class="timestamp">Posted on <%= @article.created_at.strftime("%b %d, %Y") %>.</p>
 <hr>
 <p>
   Tags:
