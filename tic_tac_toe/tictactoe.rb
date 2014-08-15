@@ -113,7 +113,7 @@ module TicTacToe
   	def get_move(p)
   	  valid_input = false
   	  until valid_input
-  	  	begin
+        begin
   	      puts "#{p.name}, choose where you would like to move."
   	      n = Integer(gets.chomp)
   	      row, col = @grid.num_to_rowcol(n)
@@ -126,7 +126,7 @@ module TicTacToe
   	      puts "Please enter an integer"
         rescue IndexError
   	  	  puts "Number is outside of grid range."
-  	  	end
+        end
   	  end
   	  return row, col
   	end
