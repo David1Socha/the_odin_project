@@ -13,10 +13,11 @@ function makeGrid(rowLength, gridType) {
     $panel.height(unitSize);
     $("#grid_area").height(unitSize * rowLength);
     $("#grid_area").width(unitSize * rowLength);
+    console.log($("#grid_area").width())
+    console.log($panel.width())
 
     switch (gridType) {
     case 1:
-        console.log('hi');
         $panel.hover(function () {
             $(this).css('background-color', getRandomColorStr());
         });
@@ -50,5 +51,4 @@ function promptGrid(gridType) {
 
 $(document).ready(function () {
     makeGrid(16);
-
 });

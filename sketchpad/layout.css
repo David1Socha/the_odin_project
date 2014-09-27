@@ -23,9 +23,8 @@ button {
     background-color: #E64040;
     border-radius: 80px;
 }
-#grid_area {
-    border: 1px solid black;
-    background-color: black;
+#grid_area { /* Might want to make bg color black for shading sketchpad (allows panel to simply turn transparent) */
+    background-color: transparent;
     display: inline-block;
     width: 720px;
     height: 720px;
