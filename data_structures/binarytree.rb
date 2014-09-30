@@ -55,7 +55,6 @@ class Node
 
 #should be called by the pivot node
   def rotate_right!
-    puts "Right Rotating with root #{@parent.value} and pivot #{@value}"
     root = @parent
     root.left_child = @right_child
     root.left_child.parent = root unless @right_child.nil?
@@ -74,7 +73,6 @@ class Node
 
 #should be called by the pivot node
   def rotate_left!
-    puts "Left Rotating with root #{@parent.value} and pivot #{@value}"
     root = @parent
     root.right_child = @left_child
     root.right_child.parent = root unless @left_child.nil?
@@ -134,13 +132,12 @@ def build_tree(arr)
       end
     end
     root = localroot if !localroot.nil? && localroot.height > root.height
-    puts
 
   end
   return root
 end
 
-def dfs(node)
+def dfs_rec(node)
   dfs(node.left_child) unless node.left_child.nil?
   puts "#{node.value}, #{node.height}"
   dfs(node.right_child) unless node.right_child.nil?
