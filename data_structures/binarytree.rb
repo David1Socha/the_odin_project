@@ -138,9 +138,9 @@ def build_tree(arr)
 end
 
 def dfs_rec(node)
-  dfs(node.left_child) unless node.left_child.nil?
+  dfs_rec(node.left_child) unless node.left_child.nil?
   puts "#{node.value}, #{node.height}"
-  dfs(node.right_child) unless node.right_child.nil?
+  dfs_rec(node.right_child) unless node.right_child.nil?
 end
 
 root = build_tree(TEST_VALS)
