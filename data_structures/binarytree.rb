@@ -8,7 +8,7 @@ class Node
   end
 
 #note: does not give accurate results unless all children have accurate heights 
-  def update_height
+  def update_height!
     if @left_child.nil? && @right_child.nil?
       @height = 0
     elsif @left_child.nil?
@@ -21,9 +21,87 @@ class Node
     @height
   end
 
+  def balance_factor
+    return 0 if @left_child.nil? && @right_child.nil?
+    return @height if @right_child.nil? 
+    return - @height if @left_child.nil?
+    return @left_child.height - @right_child.height
+  end
+
+  def rebalance!
+    localroot = self
+    if balance_factor == 2
+      lc = @left_child
+      if lc.balance_factor == -1 #handle left right case
+        lc.right_child.rotate_left! #reduce to left left case
+        @left_child.rotate_right!
+        localroot = @parent
+      else
+        lc.rotate_right! #handle left left case
+        localroot = lc
+      end
+    else
+      rc = @right_child
+      if rc.balance_factor == 1 #handle right left case
+        rc.left_child.rotate_right! #reduce to right right case
+        @right_child.rotate_left!
+        localroot = @parent
+      else
+        rc.rotate_left! #handle right right case
+        localroot = rc
+      end
+    end
+  end
+
+#should be called by the pivot node
+  def rotate_right!
+    puts "Right Rotating with root #{@parent.value} and pivot #{@value}"
+    root = @parent
+    root.left_child = @right_child
+    root.left_child.parent = root unless @right_child.nil?
+    @right_child = root
+    self.parent = right_child.parent
+    unless self.parent.nil?
+      if self.parent.right_child == right_child
+        self.parent.right_child = self 
+      else
+        self.parent.left_child = self
+      end
+    end
+    right_child.parent = self
+    update_heights!(right_child, self)
+  end
+
+#should be called by the pivot node
+  def rotate_left!
+    puts "Left Rotating with root #{@parent.value} and pivot #{@value}"
+    root = @parent
+    root.right_child = @left_child
+    root.right_child.parent = root unless @left_child.nil?
+    @left_child = root
+    self.parent = @left_child.parent
+    unless self.parent.nil?
+      if self.parent.right_child == @left_child
+        self.parent.right_child = self 
+      else
+        self.parent.left_child = self
+      end
+    end
+    @left_child.parent = self
+    update_heights!(left_child, self)
+  end
+
+  def update_heights!(*nodes)
+    nodes.each do |n|
+      n.right_child.update_height! unless n.right_child.nil?
+      n.left_child.update_height! unless n.left_child.nil?
+      n.update_height!
+    end
+  end
+
 end
 
-def build_tree(arr) 
+def build_tree(arr)
   root = Node.new(arr.first)
   current_node, parent_node, node_on_left = nil, nil, nil
   arr[1..-1].each do |val|
@@ -47,9 +125,17 @@ def build_tree(arr)
       parent_node.right_child = current_node
     end
 
-    until visited.empty? do
-      visited.pop.update_height
+    localroot = nil
+    visited.reverse_each do |node|
+      node.update_height!
+      if node.balance_factor == 2 || node.balance_factor == -2
+        localroot = node.rebalance! 
+        break
+      end
     end
+    root = localroot if !localroot.nil? && localroot.height > root.height
+    puts
+
   end
   return root
 end
@@ -62,3 +148,4 @@ end
 
 root = build_tree(TEST_VALS)
 dfs(root)
+[3,4, 8, 903, 6, -234, 29, 0, 184]
