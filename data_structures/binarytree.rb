@@ -144,5 +144,5 @@ def dfs_rec(node)
 end
 
 root = build_tree(TEST_VALS)
-dfs(root)
+dfs_rec(root)
 [3,4, 8, 903, 6, -234, 29, 0, 184]
