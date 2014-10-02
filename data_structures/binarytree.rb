@@ -33,7 +33,7 @@ class Node
     if balance_factor == 2
       lc = @left_child
       if lc.balance_factor == -1 #handle left right case
-        lc.right_child.rotate_left! #reduce to left left case
+        lc.right_child.rotate_left!
         @left_child.rotate_right!
         localroot = @parent
       else
@@ -43,7 +43,7 @@ class Node
     else
       rc = @right_child
       if rc.balance_factor == 1 #handle right left case
-        rc.left_child.rotate_right! #reduce to right right case
+        rc.left_child.rotate_right!
         @right_child.rotate_left!
         localroot = @parent
       else
@@ -61,7 +61,7 @@ class Node
     @right_child = root
     self.parent = right_child.parent
     unless self.parent.nil?
-      if self.parent.right_child == right_child
+      if self.parent.right_child == @right_child
         self.parent.right_child = self 
       else
         self.parent.left_child = self
@@ -89,6 +89,7 @@ class Node
     update_heights!(left_child, self)
   end
 
+#Updates height of each node and their children (requires all grandchildren to have accurate heights)
   def update_heights!(*nodes)
     nodes.each do |n|
       n.right_child.update_height! unless n.right_child.nil?
@@ -137,12 +138,52 @@ def build_tree(arr)
   return root
 end
 
-def dfs_rec(node)
-  dfs_rec(node.left_child) unless node.left_child.nil?
-  puts "#{node.value}, #{node.height}"
-  dfs_rec(node.right_child) unless node.right_child.nil?
+def bfs(root, value)
+  nodes = [root]
+  while node = nodes.shift do
+    if (node.value == value)
+      return node
+    else
+      nodes << node.left_child unless node.left_child.nil?
+      nodes << node.right_child unless node.right_child.nil?
+    end
+  end
 end
 
+def dfs(root, value)
+  nodes = [root]
+  while node = nodes.pop do
+    if (node.value == value)
+      return node
+    else
+      nodes << node.right_child unless node.right_child.nil?
+      nodes << node.left_child unless node.left_child.nil?
+    end
+  end
+end
+
+def dfs_rec(localroot, value)
+  if localroot.nil?
+    return nil
+  elsif localroot.value == value
+    return localroot
+  else
+    left_search = dfs_rec(localroot.left_child, value)
+    return left_search unless left_search.nil
+    right_search = dfs_rec(localroot.right_child, value)
+    return right_search
+  end
+end
+
+def inorder_traversal(node)
+  inorder_traversal(node.left_child) unless node.left_child.nil?
+  puts "#{node.value}, #{node.height}"
+  inorder_traversal(node.right_child) unless node.right_child.nil?
+end
+
+#Test outputs:
 root = build_tree(TEST_VALS)
-dfs_rec(root)
-[3,4, 8, 903, 6, -234, 29, 0, 184]
+inorder_traversal(root)
+puts "bfs(0):", bfs(root, 0).value
+puts "dfs(6):", dfs(root, 6).value
+puts "dfs_rec(6):", dfs(root, 6).value
