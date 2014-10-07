@@ -5,20 +5,22 @@ module TicTacToe
     attr_accessor :contents, :size
 
     def full? 
-      return @contents.all? { |e| e.none? { |f| f.is_a? Numeric } } 
+      return @contents.all? { |e| e.all? { |f| f.is_a? Symbol } } 
     end
 
     def initialize(size)
       @size = size
       @contents = Array.new(size) { Array.new(size) }
-      @contents.map!.with_index do |row, i|
-        row.map!.with_index do |value, j|
+      @contents.map!.with_index do |r, i|
+        r.map!.with_index do |value, j|
           rowcol_to_num(i, j)
         end
       end
     end
 
     def rowcol_to_num(row, col)
+      raise IndexError, "Row outside of grid range" if row < 0 || row >= @size
+      raise IndexError, "Column outside of grid range" if col < 0 || col >= @size
       n = @size * (row) + (col+1)
     end
 
@@ -37,50 +39,46 @@ module TicTacToe
       @contents[row][col] = symbol
     end
 
-    def has_won?(row, col, player)
-      return has_won_horizontal?(row, player) || has_won_vertical?(col, player) || has_won_diagonal?(row, col, player) || has_won_antidiagonal?(row, col, player)
+    def has_won?(row, col, symbol)
+      return has_won_horizontal?(row, symbol) || has_won_vertical?(col, symbol) || has_won_diagonal?(row, col, symbol) || has_won_antidiagonal?(row, col, symbol)
     end
 
-    def has_won_horizontal?(row, player)
+    def has_won_horizontal?(row, symbol)
       for j in 0...@size
-        return false unless player.symbol == @contents[row][j]
+        return false unless symbol == @contents[row][j]
       end
       return true
     end
 
-    def has_won_vertical?(col, player)
+    def has_won_vertical?(col, symbol)
       for i in 0...@size
-        return false unless player.symbol == @contents[i][col]
+        return false unless symbol == @contents[i][col]
       end
       return true
     end    
 
-    def has_won_diagonal?(row, col, player) 
+    def has_won_diagonal?(row, col, symbol) 
       return false unless row == col
       for i, j in (row-1).downto(0).zip((col-1).downto(0))
         break if i.nil? || j.nil?
-        puts 'a'
-        return false unless player.symbol == @contents[i][j]
+        return false unless symbol == @contents[i][j]
       end
       for i, j in ((row+1)...@size).zip((col+1)...@size)
         break if i.nil? || j.nil?
-        puts 'b'
-        return false unless player.symbol == @contents[i][j]
+        return false unless symbol == @contents[i][j]
       end
       return true
     end
 
-    def has_won_antidiagonal?(row, col, player)
+    def has_won_antidiagonal?(row, col, symbol)
       return false unless row + col == @size - 1
       for i, j in (row-1).downto(0).zip((col+1)...@size)
         break if i.nil? || j.nil?
-        puts 'c'
-        return false unless player.symbol == @contents[i][j]
+        return false unless symbol == @contents[i][j]
       end
       for i, j in ((row+1)...@size).zip((col-1).downto(0))
         break if i.nil? || j.nil?
-        puts 'd'
-        return false unless player.symbol == @contents[i][j]
+        return false unless symbol == @contents[i][j]
       end
       return true
     end
@@ -143,7 +141,7 @@ module TicTacToe
           puts @grid
           row, col = get_move p
           @grid.place_symbol(row, col, p.symbol)
-          if @grid.has_won?(row, col, p)
+          if @grid.has_won?(row, col, p.symbol)
             display_victory p
             return
           elsif @grid.full?
@@ -166,9 +164,12 @@ module TicTacToe
 
 end
 
-#To run a sample 3x3 game of TicTacToe
-p1 = TicTacToe::Player.new(:X, "Player 1")
-p2 = TicTacToe::Player.new(:O, "Player 2")
-players = [p1, p2]
-game = TicTacToe::Game.new(players)
-game.play
+def run_sample_game
+  p1 = TicTacToe::Player.new(:X, "Player 1")
+  p2 = TicTacToe::Player.new(:O, "Player 2")
+  players = [p1, p2]
+  game = TicTacToe::Game.new(players)
+  game.play
+end
+
+#run_sample_game
