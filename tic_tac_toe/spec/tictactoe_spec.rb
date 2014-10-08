@@ -174,10 +174,61 @@ describe "Grid" do
     end
 
     it "returns false when row and column are not along the maximum diagonal of grid" do
-      @grid.contents = [[:X,:Y,3],[:Y,:X,:Y],[:X,8,:X]]
+      @grid.contents = [[:X,:Y,3],[:Y,:X,:Y],[:X,8,:Y]]
       expect(@grid.has_won_antidiagonal?(2,2,:X)).to be false
     end
 
   end
 
+  describe "#has_won?" do
+
+    before(:each) do
+      @grid = TicTacToe::Grid.new(3)
+    end
+
+    it "returns true when there is a horizontal victory" do
+      @grid.contents[0] = [:Q, :Q, :Q]
+      expect(@grid.has_won?(0,0,:Q)).to be true
+    end
+
+    it "returns true when there is a vertical victory" do
+      @grid.contents.each {|row| row[1] = :W}
+      expect(@grid.has_won?(1,1,:W)).to be true
+    end
+
+    it "returns true when there is a diagonal victory" do
+      @grid.contents[0][0] = :U
+      @grid.contents[1][1] = :U
+      @grid.contents[2][2] = :U
+      expect(@grid.has_won?(0,0, :U)).to be true
+    end
+
+    it "returns true when there is an antidiagonal victory" do
+      @grid.contents[0][2] = :M
+      @grid.contents[1][1] = :M
+      @grid.contents[2][0] = :M
+      expect(@grid.has_won?(1,1, :M)).to be true
+    end
+
+    it "returns false when there is no victory" do
+      @grid.contents[0][0] = :X
+      expect(@grid.has_won?(0,0, :X)).to be false
+    end
+
+  end
+
+end
+
+describe "Player" do
+  
+  describe "#initialize" do
+
+    it "Creates a new object with specified values" do
+      player = TicTacToe::Player.new(:X, "Test Player")
+      expect(player.symbol).to eq(:X)
+      expect(player.name).to eq("Test Player")
+    end
+
+  end
+  
 end
