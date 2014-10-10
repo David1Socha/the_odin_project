@@ -9,4 +9,9 @@ class Board
     low_row_index = @contents.rindex { |row| row[col].nil?}
   end
 
+  def place_symbol(col, symbol)
+    row = lowest_empty_row_index(col)
+    @contents[row][col] = symbol unless row.nil?
+  end
+
 end

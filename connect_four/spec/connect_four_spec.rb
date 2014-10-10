@@ -22,9 +22,9 @@ describe "Board" do
 
   end
 
-  describe "#lowest_empty_row" do
+  describe "#lowest_empty_row_index" do
 
-    before(:all) do
+    before(:each) do
       @board = Board.new(7,8)
     end
 
@@ -36,6 +36,27 @@ describe "Board" do
     it "returns lowest row index when multiple rows are empty in specified column" do
       @board.contents[7][5] = :X
       expect(@board.lowest_empty_row_index(5)).to eq(6)
+    end
+
+  end
+
+  describe "#place_symbol" do
+
+    before(:each) do
+      @board = Board.new(7, 8)
+    end
+    
+    it "adds specified symbol to lowest empty row in column" do
+      allow(@board).to receive(:lowest_empty_row_index).and_return(7)
+      @board.place_symbol(1, :O)
+      expect(@board.contents[7][1]).to eq(:O)
+    end
+
+    it "does nothing if entire column is full" do
+      allow(@board).to receive(:lowest_empty_row_index).and_return(nil)
+      old_contents = Array.new(@board.contents)
+      @board.place_symbol(0, :X)
+      expect(@board.contents).to eq(old_contents)
     end
 
   end
