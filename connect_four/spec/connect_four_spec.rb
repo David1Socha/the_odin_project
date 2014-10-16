@@ -117,4 +117,27 @@ describe "Board" do
 
   end
 
+  describe "#has_won_antidiagonal" do 
+
+    before(:each) do
+      @board = Board.new(7,6)
+    end
+
+    it "returns true when four consecutive antidiagonal positions contain specified symbol" do
+      @board.contents[4][2] = :X
+      @board.contents[3][3] = :X
+      @board.contents[2][4] = :X
+      @board.contents[1][5] = :X
+      expect(@board.has_won_antidiagonal?(3,3, :X)).to be true
+    end
+
+    it "returns false when less than four consecutive antidiagonal positions contain specified symbol" do
+      @board.contents[4][2] = :X
+      @board.contents[3][3] = :X
+      @board.contents[2][4] = :X
+      expect(@board.has_won_antidiagonal?(3,3, :X)).to be false
+    end
+
+  end  
+
 end

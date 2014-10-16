@@ -18,19 +18,32 @@ class Board
     return row, col
   end
 
+  def col_range(col)
+    (col - CONNECT_LENGTH .. col + CONNECT_LENGTH)
+  end
+
+  def row_range(row)
+    (row - CONNECT_LENGTH .. row + CONNECT_LENGTH)
+  end
+
   def has_won_vertical?(row, col, symbol)
-    return false if row > @rows - CONNECT_LENGTH #need enough elements for connection to exist
-    CONNECT_LENGTH.times do |offset|
-      return false if @contents[row+offset][col] != symbol
+    row_range(row).each_cons(CONNECT_LENGTH) do |set| 
+      return true if set.all? {|r| (r >= 0 && r < @rows) && @contents[r][col] == symbol}
     end
-    return true
+    return false
   end
 
   def has_won_horizontal?(row, col, symbol)
-    min_col = [0, col - CONNECT_LENGTH].max
-    max_col = [@cols -1, col + CONNECT_LENGTH].min
-    (min_col..max_col).each_cons(CONNECT_LENGTH) do |set| 
-      return true if set.all? {|column| @contents[row][column] == symbol}
+    col_range(col).each_cons(CONNECT_LENGTH) do |set| 
+      return true if set.all? {|c| @contents[row][c] == symbol}
+    end
+    return false
+  end
+
+
+  def has_won_antidiagonal?(row, col, symbol)
+    row_range(row).zip(col_range(col).reverse_each).each_cons(CONNECT_LENGTH) do |set|
+      return true if set.all? {|rowcol| (rowcol.first >= 0 && rowcol.first < @rows) && @contents[rowcol.first][rowcol.last] == symbol}
     end
     return false
   end
