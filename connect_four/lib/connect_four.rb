@@ -40,9 +40,15 @@ class Board
     return false
   end
 
-
   def has_won_antidiagonal?(row, col, symbol)
     row_range(row).zip(col_range(col).reverse_each).each_cons(CONNECT_LENGTH) do |set|
+      return true if set.all? {|rowcol| (rowcol.first >= 0 && rowcol.first < @rows) && @contents[rowcol.first][rowcol.last] == symbol}
+    end
+    return false
+  end
+
+  def has_won_diagonal?(row, col, symbol)
+    row_range(row).zip(col_range(col)).each_cons(CONNECT_LENGTH) do |set|
       return true if set.all? {|rowcol| (rowcol.first >= 0 && rowcol.first < @rows) && @contents[rowcol.first][rowcol.last] == symbol}
     end
     return false

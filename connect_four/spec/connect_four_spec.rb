@@ -92,7 +92,7 @@ describe "Board" do
 
   end
 
-  describe "#has_won_horizontal" do 
+  describe "#has_won_horizontal?" do 
 
     before(:each) do
       @board = Board.new(7,6)
@@ -117,7 +117,7 @@ describe "Board" do
 
   end
 
-  describe "#has_won_antidiagonal" do 
+  describe "#has_won_antidiagonal?" do 
 
     before(:each) do
       @board = Board.new(7,6)
@@ -136,6 +136,29 @@ describe "Board" do
       @board.contents[3][3] = :X
       @board.contents[2][4] = :X
       expect(@board.has_won_antidiagonal?(3,3, :X)).to be false
+    end
+
+  end  
+
+  describe "#has_won_diagonal?" do 
+
+    before(:each) do
+      @board = Board.new(7,6)
+    end
+
+    it "returns true when four consecutive diagonal positions contain specified symbol" do
+      @board.contents[1][2] = :X
+      @board.contents[2][3] = :X
+      @board.contents[3][4] = :X
+      @board.contents[4][5] = :X
+      expect(@board.has_won_diagonal?(4,5, :X)).to be true
+    end
+
+    it "returns false when less than four consecutive diagonal positions contain specified symbol" do
+      @board.contents[2][2] = :X
+      @board.contents[3][3] = :X
+      @board.contents[4][4] = :X
+      expect(@board.has_won_diagonal?(3,3, :X)).to be false
     end
 
   end  
