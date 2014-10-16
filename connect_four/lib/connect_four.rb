@@ -26,4 +26,13 @@ class Board
     return true
   end
 
+  def has_won_horizontal?(row, col, symbol)
+    min_col = [0, col - CONNECT_LENGTH].max
+    max_col = [@cols -1, col + CONNECT_LENGTH].min
+    (min_col..max_col).each_cons(CONNECT_LENGTH) do |set| 
+      return true if set.all? {|column| @contents[row][column] == symbol}
+    end
+    return false
+  end
+
 end
