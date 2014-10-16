@@ -54,4 +54,8 @@ class Board
     return false
   end
 
+  def has_won?(row, col, symbol) 
+    return has_won_diagonal?(row, col, symbol) || has_won_antidiagonal?(row, col, symbol) || has_won_horizontal?(row, col, symbol) || has_won_vertical?(row, col, symbol)
+  end
+
 end

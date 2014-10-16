@@ -47,13 +47,13 @@ describe "Board" do
     end
     
     it "adds specified symbol to lowest empty row in column" do
-      allow(@board).to receive(:lowest_empty_row_index).and_return(5)
+      expect(@board).to receive(:lowest_empty_row_index).and_return(5)
       @board.place_symbol(1, :O)
       expect(@board.contents[5][1]).to eq(:O)
     end
 
     it "does nothing if entire column is full" do
-      allow(@board).to receive(:lowest_empty_row_index).and_return(nil)
+      expect(@board).to receive(:lowest_empty_row_index).and_return(nil)
       old_contents = Array.new(@board.contents)
       @board.place_symbol(0, :X)
       expect(@board.contents).to eq(old_contents)
@@ -161,6 +161,42 @@ describe "Board" do
       expect(@board.has_won_diagonal?(3,3, :X)).to be false
     end
 
-  end  
+  end
 
+  describe "#has_won?" do 
+
+    before(:each) do
+      @board = Board.new(7,6)
+    end
+
+    it "returns true when diagonal victory exists at specified location" do
+      expect(@board).to receive(:has_won_diagonal?).and_return(true)
+      expect(@board.has_won?(4,5, :X)).to be true
+    end
+
+    it "returns true when antidiagonal victory exists at specified location" do
+      expect(@board).to receive(:has_won_antidiagonal?).and_return(true)
+      expect(@board.has_won?(3,3, :X)).to be true
+    end
+
+    it "returns true when horizontal victory exists at specified location" do
+      expect(@board).to receive(:has_won_horizontal?).and_return(true)
+      expect(@board.has_won?(3,3, :X)).to be true
+    end
+
+    it "returns true when vertical victory exists at specified location" do
+      expect(@board).to receive(:has_won_vertical?).and_return(true)
+      expect(@board.has_won?(3,3, :X)).to be true
+    end
+
+    it "returns false when no victory exists at specified location" do
+      expect(@board).to receive(:has_won_vertical?).and_return(false)
+      expect(@board).to receive(:has_won_horizontal?).and_return(false)
+      expect(@board).to receive(:has_won_diagonal?).and_return(false)
+      expect(@board).to receive(:has_won_antidiagonal?).and_return(false)
+      expect(@board.has_won?(3,3, :X)).to be false
+    end
+
+  end
+  
 end
