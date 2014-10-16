@@ -198,5 +198,23 @@ describe "Board" do
     end
 
   end
-  
+
+  describe "#full?" do 
+
+    before(:each) do
+      @board = Board.new(7,6)
+      @board.contents.map! { [:X,:O,:X, :O, :X, :O, :X] }
+    end
+    
+    it "returns true if all positions of board are filled" do
+      expect(@board.full?).to be true
+    end
+
+    it "returns false if not all positions of board are filled" do
+      @board.contents[0][0] = nil
+      expect(@board.full?).to be false
+    end
+
+  end
+
 end

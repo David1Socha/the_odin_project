@@ -58,4 +58,8 @@ class Board
     return has_won_diagonal?(row, col, symbol) || has_won_antidiagonal?(row, col, symbol) || has_won_horizontal?(row, col, symbol) || has_won_vertical?(row, col, symbol)
   end
 
+  def full?
+    return !@contents.any? {|row| row.any? {|element| element.nil?} }
+  end
+
 end
