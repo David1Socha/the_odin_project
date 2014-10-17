@@ -218,3 +218,23 @@ describe "Board" do
   end
 
 end
+
+describe "Player" do
+
+  describe "#new" do
+
+    before(:all) do
+      @player = Player.new("Bob", :X)
+    end
+
+    it "saves passed name" do
+      expect(@player.name).to eq("Bob")
+    end
+
+    it "saves passed symbol" do
+      expect(@player.symbol).to eq(:X)
+    end
+
+  end
+
+end
