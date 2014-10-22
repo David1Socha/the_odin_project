@@ -71,6 +71,15 @@ class Player
   def initialize(name, symbol)
     @name = name
     @symbol = symbol
+    @won = false
+  end
+
+  def won?
+    return @won
+  end
+
+  def won=(won)
+    @won = won
   end
 
 end

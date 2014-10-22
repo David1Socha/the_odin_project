@@ -235,6 +235,10 @@ describe "Player" do
       expect(@player.symbol).to eq(:X)
     end
 
+    it "sets won to false" do 
+      expect(@player.won?).to be false
+    end
+
   end
 
 end
