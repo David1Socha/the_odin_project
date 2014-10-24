@@ -1,6 +1,7 @@
 class Board
   CONNECT_LENGTH = 4
   attr_accessor :contents
+  attr_reader :rows, :cols
 
   def initialize(row_len, col_len)
     @rows = col_len
@@ -85,12 +86,19 @@ class HumanPlayer
   end
 
   def get_move(board)
-    puts "In which row would you like to place a piece?"
-    move = gets.chomp
-    int_move = Integer(move, 10)
+    valid_input = false
+    until valid_input
+      begin
+        puts "In which column would you like to place a piece?"
+        move = gets.chomp
+        int_move = Integer(move, 10)
+        if int_move >= 0 && int_move < board.cols && !board.column_full?(int_move)
+          valid_input = true
+        end
+      rescue
+        puts "Please enter a valid integer"
+      end
+    end
     return int_move
-  rescue
-    puts "Please enter a valid integer"
   end
-
 end
