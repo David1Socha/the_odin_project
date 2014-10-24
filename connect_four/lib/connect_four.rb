@@ -92,7 +92,11 @@ class HumanPlayer
         puts "In which column would you like to place a piece?"
         move = gets.chomp
         int_move = Integer(move, 10)
-        if int_move >= 0 && int_move < board.cols && !board.column_full?(int_move)
+        if int_move < 0 || int_move >= board.cols
+          puts "Column is out of range"
+        elsif board.column_full?(int_move)
+          puts "Column is full"
+        else
           valid_input = true
         end
       rescue
