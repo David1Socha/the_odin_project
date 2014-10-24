@@ -59,14 +59,24 @@ class Board
   end
 
   def full?
-    return !@contents.any? {|row| row.any? {|element| element.nil?} }
+    @cols.times do |c|
+      if !column_full?(c)
+        return false
+      end
+    end
+    return true
+  end
+
+  def column_full?(col) #assumes board is result of valid connect four moves
+    return !@contents[0][col].nil?
   end
 
 end
 
-class Player
+class HumanPlayer
   
-  attr_accessor :name, :symbol
+  attr_accessor :name, :symbol, :won
+  alias_method :won?, :won
 
   def initialize(name, symbol)
     @name = name
@@ -74,12 +84,13 @@ class Player
     @won = false
   end
 
-  def won?
-    return @won
-  end
-
-  def won=(won)
-    @won = won
+  def get_move(board)
+    puts "In which row would you like to place a piece?"
+    move = gets.chomp
+    int_move = Integer(move, 10)
+    return int_move
+  rescue
+    puts "Please enter a valid integer"
   end
 
 end

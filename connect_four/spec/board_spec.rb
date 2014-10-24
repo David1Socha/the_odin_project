@@ -199,44 +199,49 @@ describe "Board" do
 
   end
 
-  describe "#full?" do 
+  describe "#column_full?" do
 
     before(:each) do
       @board = Board.new(7,6)
-      @board.contents.map! { [:X,:O,:X, :O, :X, :O, :X] }
+      @board.contents.each_index do |row|
+        @board.contents[row][2] = :Q
+      end
     end
     
-    it "returns true if all positions of board are filled" do
-      expect(@board.full?).to be true
+    it "returns true when column is full" do
+      expect(@board.column_full?(2)).to be true
     end
 
-    it "returns false if not all positions of board are filled" do
-      @board.contents[0][0] = nil
-      expect(@board.full?).to be false
+    it "returns false when column is empty" do
+      expect(@board.column_full?(4)).to be false
+    end
+
+    it "returns false when column is nearly full" do
+      @board.contents[0][2] = nil
+      expect(@board.column_full?(2)).to be false
     end
 
   end
 
-end
+  describe "#full?" do 
 
-describe "Player" do
-
-  describe "#new" do
-
-    before(:all) do
-      @player = Player.new("Bob", :X)
+    before(:each) do
+      @board = Board.new(7,6)
+    end
+    
+    it "returns true if all positions of board are filled" do
+      @board.contents.map! { [:X,:O,:X, :O, :X, :O, :X] }
+      expect(@board.full?).to be true
     end
 
-    it "saves passed name" do
-      expect(@player.name).to eq("Bob")
+    it "returns false if nearly all positions of board are filled" do
+      @board.contents.map! { [:X,:O,:X, :O, :X, :O, :X] }
+      @board.contents[0][0] = nil
+      expect(@board.full?).to be false
     end
 
-    it "saves passed symbol" do
-      expect(@player.symbol).to eq(:X)
-    end
-
-    it "sets won to false" do 
-      expect(@player.won?).to be false
+    it "returns false if board is empty" do
+      expect(@board.full?).to be false
     end
 
   end
