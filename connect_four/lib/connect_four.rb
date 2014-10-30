@@ -116,3 +116,14 @@ class HumanPlayer
     return int_move
   end
 end
+
+class Game
+  
+  attr_accessor :players, :board
+  
+  def initialize(row_len, col_len, *players)
+    @players = players
+    @board = Board.new(row_len, col_len)
+  end
+  
+end
