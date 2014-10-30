@@ -246,4 +246,29 @@ describe "Board" do
 
   end
 
+  describe "#to_s" do
+
+    before(:each) do 
+      @board = Board.new(7,6)
+    end
+
+    it "returns appropriate string representation for an empty board" do
+      expect(@board.to_s).to eq("|             |\n|             |\n|             |\n|             |\n|             |\n|             |\n")
+    end
+
+    it "returns appropriate string representation for partially filled board" do
+      @board.contents[5][5] = :O
+      @board.contents[5][6] = :O
+      @board.contents[5][2] = :X
+      @board.contents[4][2] = :X
+      expect(@board.to_s).to eq("|             |\n|             |\n|             |\n|             |\n|    X        |\n|    X     O O|\n")
+    end
+
+    it "returns appropriate string representation for a full board" do
+      @board.contents.map! {|r| [:O, :X, :O, :X, :O, :X, :O]}
+      expect(@board.to_s).to eq("|O X O X O X O|\n|O X O X O X O|\n|O X O X O X O|\n|O X O X O X O|\n|O X O X O X O|\n|O X O X O X O|\n")
+    end
+
+  end
+
 end

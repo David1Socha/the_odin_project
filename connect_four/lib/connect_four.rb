@@ -72,6 +72,15 @@ class Board
     return !@contents[0][col].nil?
   end
 
+  def to_s
+    board_str = ""
+    @contents.each do |row|
+      row_str = row.map{|e| e.nil? ? " " : e }.join(" ")
+      board_str << "|#{row_str}|\n"
+    end
+    board_str
+  end
+
 end
 
 class HumanPlayer
