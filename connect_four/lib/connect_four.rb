@@ -125,5 +125,11 @@ class Game
     @players = players
     @board = Board.new(row_len, col_len)
   end
+
+  def run_turn(player)
+    col = player.get_move(@board)
+    row, col = @board.place_symbol(col, player.symbol)
+    player.won = @board.has_won?(row, col, player.symbol)
+  end
   
 end
