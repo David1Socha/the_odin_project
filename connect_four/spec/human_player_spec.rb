@@ -18,9 +18,15 @@ describe "HumanPlayer" do
       allow(@player).to receive(:puts)
     end
 
+    it "Displays current board state" do 
+      expect(@player).to receive(:puts).with("Current Board:",@board)
+      allow(@player).to receive(:gets).and_return("3")
+      @player.get_move @board
+    end
+
     it "Prompts the user for input" do
       expect(@player).to receive(:puts)
-      expect(@player).to receive(:gets).and_return("5")
+      allow(@player).to receive(:gets).and_return("5")
       @player.get_move @board
     end
 

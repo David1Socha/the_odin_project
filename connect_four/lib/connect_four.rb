@@ -96,6 +96,7 @@ class HumanPlayer
 
   def get_move(board)
     valid_input = false
+    puts "Current Board:", board
     until valid_input
       begin
         puts "In which column would you like to place a piece?"
