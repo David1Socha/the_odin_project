@@ -132,4 +132,15 @@ class Game
     player.won = @board.has_won?(row, col, player.symbol)
   end
   
+  def play
+    while @players.none? {|p| p.won?}
+      @players.each do |p|
+        run_turn(p) if @players.none? {|p| p.won?} #to check for case where earlier player has just won
+      end
+    end
+    winner = @players.first {|p| p.won?}
+    puts "Congratulations, #{winner.name}. You win!"
+    winner.won = false #reset player for future games
+  end
+
 end
